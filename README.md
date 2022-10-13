@@ -39,14 +39,8 @@ grpc服务
 > protoc -I . user.proto --go_out=plugins=grpc:.
 > 
 + 2.3 数据库服务
-  + 下载镜像：
-  > ```shell
-  docker pull mysql:8.0.22
-  > ```
-  + 查看镜像：
-  > ```shell
-  docker images
-  > ```
+  + 下载镜像：docker pull mysql:8.0.22
+  + 查看镜像：docker images
   
   + 通过镜像启动：
   > ```shell
