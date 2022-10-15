@@ -1,7 +1,7 @@
 /**
  * @file: global.go
  * @time: 2022-10-12 18:02
- * @Author: xieHuiHuang
+ * @Author: jack
  * @Email: 793936517@qq.com
  * @desc:
  **/
@@ -16,4 +16,5 @@ import (
 var (
 	DB           *gorm.DB
 	ServerConfig config.ServerConfig
+	//ServerConfig *config.ServerConfig = &config.ServerConfig{}
 )

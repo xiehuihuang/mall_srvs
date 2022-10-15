@@ -1,7 +1,7 @@
 /**
  * @file: user.go
  * @time: 2022-10-12 18:02
- * @Author: xieHuiHuang
+ * @Author: jack
  * @Email: 793936517@qq.com
  * @desc:
  **/
