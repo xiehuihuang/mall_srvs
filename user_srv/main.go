@@ -67,7 +67,7 @@ func main() {
 	check := &api.AgentServiceCheck{
 		GRPC:                           fmt.Sprintf("%s:%d", *IP, *Port), // user_srv grpc服务ip、port
 		Timeout:                        "5s",
-		Interval:                       "5s",
+		Interval:                       "10s",
 		DeregisterCriticalServiceAfter: "15s",
 	}
 	// 生成注册对象
