@@ -1,6 +1,6 @@
 name: 'user_srv'
 host: '127.0.0.1'
-port: 50051
+port: 0
 
 mysql:
   host: '127.0.0.1'

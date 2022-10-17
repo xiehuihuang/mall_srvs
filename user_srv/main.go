@@ -11,6 +11,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	uuid "github.com/satori/go.uuid"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/hashicorp/consul/api"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -20,6 +25,7 @@ import (
 	"mall_srvs/user_srv/handler"
 	"mall_srvs/user_srv/initialize"
 	"mall_srvs/user_srv/proto"
+	"mall_srvs/user_srv/utils"
 	"net"
 )
 
@@ -38,11 +44,11 @@ func main() {
 	zap.S().Info("ip: ", *IP)
 	zap.S().Info("port: ", *Port)
 	// 生产环境动态获取服务可用端口号
-	//if *Port == 0 {
-	//	*Port, _ = utils.GetFreePort()
-	//}
-	//
-	//zap.S().Info("port: ", *Port)
+	if *Port == 0 {
+		*Port, _ = utils.GetFreePort()
+	}
+
+	zap.S().Info("port: ", *Port)
 
 	server := grpc.NewServer()
 	proto.RegisterUserServer(server, &handler.UserServer{})
@@ -73,17 +79,30 @@ func main() {
 	// 生成注册对象
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = global.ServerConfig.Name
-	registration.ID = global.ServerConfig.Name
+	serverID := fmt.Sprintf("%s", uuid.NewV4())
+	registration.ID = serverID
 	registration.Port = *Port
 	registration.Tags = []string{"jack", "user_srv"}
 	registration.Address = *IP // user_srv grpc服务ip
 	registration.Check = check
+	//1.如何启动两个服务
+	//2.即使我能够通过终端启动两个服务，但是注册到consul中的时候也会被覆盖
 	err = client.Agent().ServiceRegister(registration)
 	if err != nil {
 		panic(err)
 	}
-	err = server.Serve(lis)
-	if err != nil {
-		panic("failed to start grpc:" + err.Error())
+	go func() {
+		err = server.Serve(lis)
+		if err != nil {
+			panic("failed to start grpc:" + err.Error())
+		}
+	}()
+	//接收终止信号
+	quit := make(chan os.Signal)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	if err = client.Agent().ServiceDeregister(serverID); err != nil {
+		zap.S().Info("注销失败")
 	}
+	zap.S().Info("注销成功")
 }
