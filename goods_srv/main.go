@@ -1,6 +1,6 @@
 /**
  * @file: main.go
- * @time: 2022-10-11 17:11
+ * @time: 2022-10-22 15:00
  * @Author: jack
  * @Email: 793936517@qq.com
  * @desc:
@@ -21,15 +21,19 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-	"mall_srvs/user_srv/global"
-	"mall_srvs/user_srv/handler"
-	"mall_srvs/user_srv/initialize"
-	"mall_srvs/user_srv/proto"
-	"mall_srvs/user_srv/utils"
+	"mall_srvs/goods_srv/global"
+	"mall_srvs/goods_srv/handler"
+	"mall_srvs/goods_srv/initialize"
+	"mall_srvs/goods_srv/proto"
+	"mall_srvs/goods_srv/utils"
 	"net"
 )
 
 func main() {
+
+	IP := flag.String("ip", "0.0.0.0", "ip地址")
+	//Port := flag.Int("port", global.ServerConfig.Port, "端口号")
+	Port := flag.Int("port", 50052, "端口号")
 	//初始化
 	initialize.InitLogger()
 	initialize.InitConfig()
@@ -37,8 +41,6 @@ func main() {
 	zap.S().Info(global.ServerConfig)
 
 	// 从global配置文件中user_srv服务的ip及端口号
-	IP := flag.String("ip", global.ServerConfig.Host, "ip地址")
-	Port := flag.Int("port", global.ServerConfig.Port, "端口号")
 
 	flag.Parse()
 	zap.S().Info("ip: ", *IP)
@@ -51,7 +53,7 @@ func main() {
 	zap.S().Info("port: ", *Port)
 
 	server := grpc.NewServer()
-	proto.RegisterUserServer(server, &handler.UserServer{})
+	proto.RegisterGoodsServer(server, &handler.GoodsServer{})
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *IP, *Port))
 	//lis, err := net.Listen("tcp", fmt.Sprintf("#{*IP}:#{*Port}"))
 	if err != nil {
@@ -71,7 +73,7 @@ func main() {
 	}
 	//生成对应的检查对象
 	check := &api.AgentServiceCheck{
-		GRPC:                           fmt.Sprintf("%s:%d", *IP, *Port), // user_srv grpc服务ip、port
+		GRPC:                           fmt.Sprintf("%s:%d", global.ServerConfig.Host, *Port), // user_srv grpc服务ip、port
 		Timeout:                        "5s",
 		Interval:                       "5s",
 		DeregisterCriticalServiceAfter: "10s",
@@ -82,8 +84,8 @@ func main() {
 	serverID := fmt.Sprintf("%s", uuid.NewV4())
 	registration.ID = serverID
 	registration.Port = *Port
-	registration.Tags = []string{"jack", "user_srv"}
-	registration.Address = *IP // user_srv grpc服务ip
+	registration.Tags = global.ServerConfig.Tags
+	registration.Address = global.ServerConfig.Host // user_srv grpc服务ip
 	registration.Check = check
 	//1.如何启动两个服务
 	//2.即使我能够通过终端启动两个服务，但是注册到consul中的时候也会被覆盖
