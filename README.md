@@ -6,6 +6,7 @@
   + 开发工具：goland2021.3.3
   + 技术栈 go、gin、gorm、grpc、consul、nacos、docker
   + 数据库：mysql8、redis5.0
+  + 技术框架流程图：https://www.processon.com/view/link/632e7d427d9c081f94ea4c3e
 
 1.2 代码git clone
   + git clone仓库代码：git clone git@github.com:xiehuihuang/mall_srvs.git
@@ -87,10 +88,10 @@
 ##### 三、商品微服务（goods_srv）：
 1 商品服务
   + 商品模块(商品列表、批量获取商品信息、商品增/删/查/改)
-  + 商品分类
-  + 商品子分类
+  + 商品分类（获取所有的分类）
+  + 商品子分类（获取子分类列表信息、新建、删除、修改分类信息）
   + 商品品牌
-  + 商品轮播图
+  + 商品轮播图（获取轮播图列表信息、添加、删除、修改轮播图）
   + 品牌分类
   + 通过分类获取品牌
   + 用户权限验证
