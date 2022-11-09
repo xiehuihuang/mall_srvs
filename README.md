@@ -119,7 +119,46 @@
 }
 }
 ```
-#### 四 运行：
+##### 四、库存微服务（inventory_srv）：
+1 库存服务
++ 设置库存
++ 获取库存信息
++ 库存扣减（mysql悲观锁、乐观锁、redis分布式锁）
++ 库存归还
+
+2 go grpc生成go文件
++ protoc -I . inventory.proto --go_out=plugins=grpc:.
+
+3 nacos配置服务中心: inventory_srv.json 配置信息如下
+```json
+{
+  "name": "inventory_srv",
+  "host": "127.0.0.1",
+  "tags": ["inventory_srv", "go-grpc", "srv"],
+  "mysql": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "topsky",
+    "db": "mall_inventory_srv"
+  },
+  "redis": {
+    "host":"127.0.0.1",
+    "port":6379,
+    "paaword": "topsky",
+    "db":0
+  },
+  "rocketmq":{
+    "host":"127.0.0.1",
+    "port":9876
+  },
+  "consul": {
+    "host": "127.0.0.1",
+    "port": 8500
+  }
+}
+```
+#### 五 运行：
  + go  run main.go
 
 

@@ -4,6 +4,8 @@ go 1.18
 
 require (
 	github.com/anaskhan96/go-password-encoder v0.0.0-20201010210601-c765b799fd72
+	github.com/go-redis/redis/v8 v8.11.5
+	github.com/go-redsync/redsync/v4 v4.6.0
 	github.com/golang/protobuf v1.5.2
 	github.com/hashicorp/consul/api v1.12.0
 	github.com/nacos-group/nacos-sdk-go v1.1.2
@@ -20,13 +22,17 @@ require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.18 // indirect
 	github.com/armon/go-metrics v0.3.10 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/go-errors/errors v1.0.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.2.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
+	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/hashicorp/go-rootcerts v1.0.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
